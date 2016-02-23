@@ -16,9 +16,9 @@
      * You should have received a copy of the GNU General Public License
      * along with this program.  If not, see <http://www.gnu.org/licenses/>.
      */
-	
+    
     // Posts vote thread reminders where they are needed.
-	final class ReminderPoster {
+    final class ReminderPoster {
         // Presence of this marker in the body of a post indicates that the mod does not want a vote thread
         const NO_THREAD_REQUIRED_MARKER = '[](#novote)';
         

@@ -28,13 +28,13 @@
     require_once(__DIR__ . '/config.php');
     
     const EXIT_PAUSE = 5;
-	
+    
     echo USERAGENT, "\r\n", str_repeat('=', strlen(USERAGENT)), "\r\n";
     
     $client = new RdtAPI\Client();
     $client->setUseragent(USERAGENT);
     $client->authorize(CLIENT_ID, CLIENT_SECRET, USERNAME, PASSWORD);
-	
+    
     echo "Looking for vote threads...\r\n";
     $threads = [];
     $comments = $client->get('/user/' . USERNAME . '/comments.json');

@@ -16,12 +16,12 @@
      * You should have received a copy of the GNU General Public License
      * along with this program.  If not, see <http://www.gnu.org/licenses/>.
      */
-	
+    
     // Weighers assign weights to each Bucket of votes.
-	abstract class Weigher {
+    abstract class Weigher {
         // Assigns weight to each bucket in a set
-		abstract public function apply(array /* of Bucket */ &$buckets);
-	}
+        abstract public function apply(array /* of Bucket */ &$buckets);
+    }
     
     // Weighs every bucket solely based on the number of votes it has.
     class BasicWeigher extends Weigher {

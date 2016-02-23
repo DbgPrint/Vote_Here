@@ -19,61 +19,61 @@
     
     // Filters remove votes that are not valid according to the rules of a game. A new instance of a filter is created
     // for each Thread.
-	abstract class Filter {
+    abstract class Filter {
         // Returns an array of votes that passed through the filter.
-		abstract public function apply(array /* of Vote */ $votes);
-	}
+        abstract public function apply(array /* of Vote */ $votes);
+    }
     
-	// Only picks the most recent vote by each voter, discarding all the previous ones. This approach ensures that each
+    // Only picks the most recent vote by each voter, discarding all the previous ones. This approach ensures that each
     // player has only one vote.
-	class LatestFilter extends Filter {
-		public function apply(array /* of Vote */ $votes) {
-			$votesByAuthor = []; // username => vote
-			foreach($votes as $vote) {
-				if(!isset($votesByAuthor[$vote->author]) || $votesByAuthor[$vote->author]->time < $time)
-					$votesByAuthor[$vote->author] = $vote;
-			}
-			return array_values($votesByAuthor);
-		}
-	}
+    class LatestFilter extends Filter {
+        public function apply(array /* of Vote */ $votes) {
+            $votesByAuthor = []; // username => vote
+            foreach($votes as $vote) {
+                if(!isset($votesByAuthor[$vote->author]) || $votesByAuthor[$vote->author]->time < $time)
+                    $votesByAuthor[$vote->author] = $vote;
+            }
+            return array_values($votesByAuthor);
+        }
+    }
     
-	// Removes votes in which a person votes for him-/herself.
-	class SelfFilter extends Filter {
-		public function apply(array /* of UnitBucket */  $buckets) {
-			$filtered = [];
-			foreach($buckets as $bucket) {
-				if($bucket->getTarget() === null ||
+    // Removes votes in which a person votes for him-/herself.
+    class SelfFilter extends Filter {
+        public function apply(array /* of UnitBucket */  $buckets) {
+            $filtered = [];
+            foreach($buckets as $bucket) {
+                if($bucket->getTarget() === null ||
                    strtolower($bucket->getTarget()) !== strtolower($bucket->getVote()->author))
-					$filtered[] = $bucket;
-			}
-			return $filtered;
-		}
-	}
+                    $filtered[] = $bucket;
+            }
+            return $filtered;
+        }
+    }
     
     // Discards votes made for or by people who are not marked as living players in a Thread. If it has no players
     // listed, the filter will not remove any votes.
-	class DeadFilter extends Filter {
-		private $thread;
-		
-		public function __construct(Thread $thread) {
-			$this->thread = $thread;
-		}
+    class DeadFilter extends Filter {
+        private $thread;
         
-		public function apply(array /* of Vote */ $votes) {
+        public function __construct(Thread $thread) {
+            $this->thread = $thread;
+        }
+        
+        public function apply(array /* of Vote */ $votes) {
             $players = $this->thread->getPlayers();
-			if(count($players) === 0)
-				return $votes;
-			
-			$filtered = [];
-			foreach($votes as $vote) {
-				if(!in_array($vote->author, $players, true))
-					continue;
+            if(count($players) === 0)
+                return $votes;
+            
+            $filtered = [];
+            foreach($votes as $vote) {
+                if(!in_array($vote->author, $players, true))
+                    continue;
                 
-				if($vote->target !== null && !in_array($vote->target, $players, true))
-					continue;
+                if($vote->target !== null && !in_array($vote->target, $players, true))
+                    continue;
                 
-				$filtered[] = $vote;
-			}
-			return $filtered;
-		}
-	}
+                $filtered[] = $vote;
+            }
+            return $filtered;
+        }
+    }

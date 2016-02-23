@@ -16,8 +16,8 @@
      * You should have received a copy of the GNU General Public License
      * along with this program.  If not, see <http://www.gnu.org/licenses/>.
      */
-	
-	final class TextUtils {
+    
+    final class TextUtils {
         // Finds a string in $haystack that exactly matches $needle, ignoring capitalization.
         public static function findStringCaseInsensitive($haystack, $needle) {
             // TODO: http://stackoverflow.com/questions/4168107/case-insensitive-array-search

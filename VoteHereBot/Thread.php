@@ -16,12 +16,12 @@
      * You should have received a copy of the GNU General Public License
      * along with this program.  If not, see <http://www.gnu.org/licenses/>.
      */
-	
+    
     require_once(__DIR__ . '/TextUtils.php');
     
     require_once(__DIR__ . '/Vote.php');
     require_once(__DIR__ . '/Bucket.php');    
-	require_once(__DIR__ . '/Filters.php');
+    require_once(__DIR__ . '/Filters.php');
     require_once(__DIR__ . '/Weighers.php');
     
     class Thread {
