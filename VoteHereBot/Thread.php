@@ -187,7 +187,7 @@
                        self::storeInHiddenLink(self::HAMMER_MARKER, $this->hammer);
             
             // Update the thread comment
-            if(str_replace('&amp;', '&', $comment->data->body) === $newText)
+            if(str_replace([ '&amp;', '&lt;', '&gt;' ], [ '&', '<', '>' ], $comment->data->body) === $newText)
                 return 'Not changed';
             $client->post('/api/editusertext', [
                 'api_type' => 'json',
