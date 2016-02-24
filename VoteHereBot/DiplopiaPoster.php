@@ -17,7 +17,7 @@
      * along with this program.  If not, see <http://www.gnu.org/licenses/>.
      */
     
-    // Posts vote thread markers to Diplopia day threads to cause the vote threads to appear after the next update.
+    // Posts vote thread markers to Diplopia day threads to cause vote threads to appear after the next update.
     final class DiplopiaPoster {
         // Username of the game mod in lowercase.
         const MODERATOR = 'diplopiamafia';
