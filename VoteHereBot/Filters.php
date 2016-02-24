@@ -39,12 +39,12 @@
     
     // Removes votes in which a person votes for him-/herself.
     class SelfFilter extends Filter {
-        public function apply(array /* of UnitBucket */  $buckets) {
+        public function apply(array /* of Vote */ $votes) {
             $filtered = [];
-            foreach($buckets as $bucket) {
-                if($bucket->getTarget() === null ||
-                   strtolower($bucket->getTarget()) !== strtolower($bucket->getVote()->author))
-                    $filtered[] = $bucket;
+            foreach($votes as $vote) {
+                if($vote->target === null ||
+                   strtolower($vote->target) !== strtolower($vote->author))
+                    $filtered[] = $vote;
             }
             return $filtered;
         }
