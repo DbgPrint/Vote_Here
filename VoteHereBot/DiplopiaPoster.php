@@ -19,11 +19,11 @@
     
     // Posts vote thread markers to Diplopia day threads to cause the vote threads to appear after the next update.
     final class DiplopiaPoster {
+        // Username of the game mod in lowercase.
+        const MODERATOR = 'diplopiamafia';
+        
         private $client, $username, $subreddit;
         private $postsWithOurComments = [];
-        
-        // The bot will only consider posts that were created up to 'max' seconds ago.
-        private $postMaxAge = 2400; // 40 minutes
         
         // Creates a new instance of the bot. The client must be authorized before the bot runs.
         public function __construct(RdtAPI\Client $client, /* string */ $username, /* string */ $subreddit) {
@@ -54,21 +54,17 @@
         
         // Posts a Diplopia vote thread marker if it is necessary and returns a status string.
         private function postMarkerIfNeeded(/* reddit link */ $post) {
+            // This must be a Diplopia thread
+            if(strtolower($post->data->author) !== self::MODERATOR)
+                return 'Not Diplopia';
+            
             // If we already placed a comment in the post, there is no need to consider placing another
             if(in_array('t3_' . $post->data->id, $this->postsWithOurComments, true))
                 return 'Visited';
             
-            // There is no need to worry about old posts, and we want to give the mod time to post his own vote thread
-            if(time() > $post->data->created_utc + $this->postMaxAge)
-                return 'Too old';
-            
             // NOTE the space after 'day': we are expecting a number (in the word or digital form) there!
             if(strpos(strtolower($post->data->title), 'day ') === false || $post->data->selftext === '')
-                return 'Not a day thread';
-            
-            // This must be a Diplopia thread
-            if(strpos(strtolower($post->data->title), 'diplopia') === false)
-                return 'Not Diplopia';
+                return 'Not Day';
             
             // Post the marker
             $this->client->post('/api/comment', [
