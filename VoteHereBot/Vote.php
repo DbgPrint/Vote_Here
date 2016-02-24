@@ -80,7 +80,7 @@
         // Determines the exact username of a person mentioned in a comment using a list of possible usernames and their
         // nicknames. If only a portion of a username or nickname was mentioned, the function checks every possible
         // match and makes sure that all of them eventually resolve to the same person.
-        private static function resolveUsername(/* string */ $username, array /* of string */ $usernames,
+        protected static function resolveUsername(/* string */ $username, array /* of string */ $usernames,
                                                 array /* of string */ $nicknames = []) {
             // First of all, try an exact match.
             $match = TextUtils::findStringCaseInsensitive($usernames, $username);
@@ -110,7 +110,7 @@
         }
         
         // Finds strings in $haystack that contain $needle.
-        private static function findStringsWith($haystack, $needle) {
+        protected static function findStringsWith($haystack, $needle) {
             $needleLowercase = strtolower($needle);
             $matches = [];
             foreach($haystack as $hay) {
@@ -122,7 +122,7 @@
         
         // Removes all groups of symbols _enclosed_ by $boundary. If a substring is not surrounded by $boundary on both
         // sides, it, along with the preceding instance of $boundary, will not be removed.
-        private static function removeTextEnclosedBy($boundary, $text) {
+        protected static function removeTextEnclosedBy($boundary, $text) {
             $blocks = explode($boundary, $text);
             $text = '';
             for($i = 0, $total = count($blocks); $i < $total; ++$i) {
@@ -137,7 +137,7 @@
         // Removes all groups of symbols not enclosed by $boundary. A substring must be surrounded by $boundary on both
         // sides to remain in the output. Substrings in the ouptut will be separated by $separator. All instances of
         // $boundary will be removed.
-        private static function removeTextNotEnclosedBy($boundary, $text, $separator = "\n") {
+        protected static function removeTextNotEnclosedBy($boundary, $text, $separator = "\n") {
             $blocks = explode($boundary, $text);
             $output = [];
             for($i = 0, $total = count($blocks); $i < $total; ++$i) {

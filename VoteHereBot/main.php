@@ -20,10 +20,16 @@
     set_time_limit(30);
     date_default_timezone_set('America/New_York');
     
+    const SUPPORT_DIPLOPIA = true;
+    
     require_once(__DIR__ . '/../RdtAPI/Client.php');
     
     require_once(__DIR__ . '/ReminderPoster.php');
     require_once(__DIR__ . '/Thread.php');
+    if(defined('SUPPORT_DIPLOPIA')) {
+        require_once(__DIR__ . '/DiplopiaPoster.php');
+        require_once(__DIR__ . '/DiplopiaThread.php');
+    }
     
     require_once(__DIR__ . '/config.php');
     
@@ -35,15 +41,22 @@
     $client->setUseragent(USERAGENT);
     $client->authorize(CLIENT_ID, CLIENT_SECRET, USERNAME, PASSWORD);
     
+    $threadTypes = [ 'Thread' ];
+    if(defined('SUPPORT_DIPLOPIA'))
+        $threadTypes = array_merge([ 'DiplopiaThread' ], $threadTypes);
+    
     echo "Looking for vote threads...\r\n";
     $threads = [];
     $comments = $client->get('/user/' . USERNAME . '/comments.json');
     foreach($comments->data->children as $comment) {
-        try {
-            $threads[] = new Thread($comment);
-        }
-        catch(Exception $e) {
-            continue;
+        foreach($threadTypes as $threadType) {
+            try {
+                $threads[] = new $threadType($comment);
+                break;
+            }
+            catch(Exception $e) {
+                continue;
+            }
         }
     }
     
@@ -55,6 +68,12 @@
         echo $thread->update($client), "\r\n";
     }
     echo "\r\n";
+    
+    if(defined('SUPPORT_DIPLOPIA')) {
+        $dp = new DiplopiaPoster($client, USERNAME, SUBREDDIT);
+        $dp->run();
+        echo "\r\n";
+    }
     
     $rp = new ReminderPoster($client, USERNAME, SUBREDDIT);
     $rp->run();

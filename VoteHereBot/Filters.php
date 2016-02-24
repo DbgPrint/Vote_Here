@@ -30,7 +30,7 @@
         public function apply(array /* of Vote */ $votes) {
             $votesByAuthor = []; // username => vote
             foreach($votes as $vote) {
-                if(!isset($votesByAuthor[$vote->author]) || $votesByAuthor[$vote->author]->time < $time)
+                if(!isset($votesByAuthor[$vote->author]) || $votesByAuthor[$vote->author]->time < $vote->time)
                     $votesByAuthor[$vote->author] = $vote;
             }
             return array_values($votesByAuthor);
@@ -66,7 +66,7 @@
             
             $filtered = [];
             foreach($votes as $vote) {
-                if(!in_array($vote->author, $players, true))
+                if($vote->author === null || !in_array($vote->author, $players, true))
                     continue;
                 
                 if($vote->target !== null && !in_array($vote->target, $players, true))

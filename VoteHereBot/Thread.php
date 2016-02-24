@@ -78,8 +78,11 @@
                 $this->players = explode('|', $this->players);
             
             // TODO: hardcoded nicknames, read them from the comment
-            $this->nicknames = [ 'DiscordDraconeqqus' => 'DiscordDraconequus', 'taco' => 'tortillatime',
-                                 'AbberantWhovian' => 'AberrantWhovian' ];
+            $this->nicknames = [
+                'AbberantWhovian' => 'AberrantWhovian',
+                'DiscordDraconeqqus' => 'DiscordDraconequus',
+                'taco' => 'tortillatime',
+            ];
             
             // Create filters
             $this->filters = [];
@@ -208,7 +211,7 @@
         }
         
         // Returns an appropriate emote for the vote thread comment based on a list of buckets
-        private static function makeVoteThreadEmote(array /* of Bucket */ $buckets) {
+        protected static function makeVoteThreadEmote(array /* of Bucket */ $buckets) {
             $votesTotal = array_reduce($buckets, function($carry, $b) { return $carry + count($b->getVotes()); }, 0);
             $stares = [ '[](/fillysbstare)' => 7, '[](/sbstare)' => 3, '[](/sb10)' => 2, '[](/sbigstare)' => 0 ];
                       // '[](/sbtaffy)[](/sp)' is too big
@@ -223,7 +226,7 @@
         // Returns the markup for the vote thread table. Buckets will be ordered by their weight in descending order
         // and all options with weight equal to the highest weight will be highlighed. In addition, if $hammered is set
         // to true, these options will have a picture of hammer next to their display names.
-        private static function makeVoteThreadTable(array /* of Bucket */ $buckets, /* bool */ $hammered = false) {
+        protected static function makeVoteThreadTable(array /* of Bucket */ $buckets, /* bool */ $hammered = false) {
             // Sort buckets by weight in descending order
             // NOTE: do not replace the comparison function with $b->getWeight() - $a->getWeight(): if the difference
             //       is between -1 and 1, usort() will truncate it to 0. See CAUTION in usort() documentation.
@@ -259,7 +262,7 @@
         }
         
         // Returns all usernames mentioned in a text, without duplicates.
-        private static function getMentionedUsernames(/* string */ $text) {
+        protected static function getMentionedUsernames(/* string */ $text) {
             $matches = [];
             preg_match_all('/\/u\/(?P<username>[a-z0-9\-_]+)/i', $text, $matches);
             
@@ -271,13 +274,13 @@
         }
 
         // Stores a string inside a hidden link with a given marker. NOTE: marker may not contain the pipe character.
-        private static function storeInHiddenLink(/* string */ $marker, /* string */ $string) {
+        protected static function storeInHiddenLink(/* string */ $marker, /* string */ $string) {
             return '[](#' . $marker . '|' . str_replace([ '\\', ')', "\r", "\n", "\t" ],
                                                         [ '\\\\', '\\)', '\\r', '\\n', '\\t' ], $string) . ')';
         }
         
         // Returns data stored in a hidden link with given marker.
-        private static function getFromHiddenLink(/* string */ $marker, /* string */ $text) {
+        protected static function getFromHiddenLink(/* string */ $marker, /* string */ $text) {
             $beginning = '[](#' . $marker . '|';
             if(($start = strpos($text, $beginning)) === false)
                 return null;
