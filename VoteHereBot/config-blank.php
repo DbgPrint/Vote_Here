@@ -4,6 +4,6 @@
     const USERNAME = '';
     const PASSWORD = '';
     
-    const USERAGENT = 'Vote_Here Bot v2.46D github.com/DbgPrint/Vote_Here';
+    const USERAGENT = 'Vote_Here Bot v2.46D1 github.com/DbgPrint/Vote_Here';
     
     const SUBREDDIT = '';

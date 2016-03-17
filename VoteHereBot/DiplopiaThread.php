@@ -22,7 +22,7 @@
     
     class DiplopiaThread extends Thread {
         // Presence of this substring in a comment indicates that it is a Diplopia vote thread.
-        const VOTE_THREAD_MARKER = '[](#vote-diplopia)';
+        const VOTE_THREAD_MARKER = '[](#vote-diplopia-2)';
         
         private $subreddit, $postId, $commentId, $name, $admin, $created;
         
@@ -32,10 +32,10 @@
         private $players, $operators, $nicknames;
         
         // Lifetime of the vote thread, in hours since the comment was posted
-        const LIFETIME = 96;
+        const LIFETIME = 48;
         
         // Instructions for voting
-        const VOTE_INSTRUCTIONS = "Votes should be in the format **\*\*Vote:** *<novelty>* *<guess>***\*\*&nbsp;** or **\*\*Vote: no lynch\*\*&nbsp;**.";
+        const VOTE_INSTRUCTIONS = "Votes should be in the format **\*\*Vote:** *<novelty>* *<guess>***\*\*&nbsp;** or **\*\*Vote: no lynch\*\*&nbsp;**. If you don't want to make a guess regarding who is controlling the novelty, type **none** instead of *<guess>*.";
         
         // Creates a new vote thread from a comment. Throws an exception if the comment does not contain a vote thread.
         public function __construct(/* reddit comment */ $comment) {
@@ -173,6 +173,8 @@
                 
                 // ...and add them into the table
                 foreach($guessesFreq as $guess => $frequency) {
+                    if($guess === 0)
+                        continue;
                     $markup .= '&emsp;&emsp;&middot; controlled by *\/u/' . $guess . '*|' .
                                '' . $frequency . ' vote' . ($frequency !== 1 ? 's' : '') . "\r\n";
                 }

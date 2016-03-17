@@ -53,16 +53,28 @@
                 preg_match_all('/vote(([\s:]+)(\/u\/)?|\/u\/)(?P<target>[a-z0-9\-_]+)' .
                                     '(([\s:]+)(\/u\/)?|\/u\/)(?P<guess>[a-z0-9\-_]+)/i', $text, $matches);
                 
-                // Pick the first pair that unambiguously resolve to a player.
+                // Pick the first pair that unambiguously resolves to specific usernames
                 $target = $guess = null;
                 foreach($matches['target'] as $i => $targetMatch) {
                     $guessMatch = $matches['guess'][$i];
-                    if(($targetUsername = self::resolveUsername($targetMatch, $players, $nicknames)) &&
-                       ($guessUsername = self::resolveUsername($guessMatch, $operators, $nicknames))) {
+
+                    $targetUsername = self::resolveUsername($targetMatch, $players, $nicknames);
+                    if($targetUsername)
                         $target = $targetUsername;
-                        $guess = $guessUsername;
-                        break;
+                    else
+                        continue;
+                    
+                    if(strtolower($guessMatch) === 'none')
+                        $guess = 0; // array_count_values() can only count integers and strings
+                    else {
+                        $guessUsername = self::resolveUsername($guessMatch, $operators, $nicknames);
+                        if($guessUsername)
+                            $guess = $guessUsername;
+                        else
+                            continue;
                     }
+                    
+                    break;
                 }
                 
                 // If there are no votes that can be resolved...
