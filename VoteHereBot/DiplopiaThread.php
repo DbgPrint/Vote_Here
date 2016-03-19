@@ -22,7 +22,7 @@
     
     class DiplopiaThread extends Thread {
         // Presence of this substring in a comment indicates that it is a Diplopia vote thread.
-        const VOTE_THREAD_MARKER = '[](#vote-diplopia-2)';
+        const VOTE_THREAD_MARKER = '[](#vote-diplopia)';
         
         private $subreddit, $postId, $commentId, $name, $admin, $created;
         
