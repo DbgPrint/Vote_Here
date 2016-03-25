@@ -32,7 +32,7 @@
         private $players, $operators, $nicknames;
         
         // Lifetime of the vote thread, in hours since the comment was posted
-        const LIFETIME = 48;
+        const LIFETIME = 72;
         
         // Instructions for voting
         const VOTE_INSTRUCTIONS = "Votes should be in the format **\*\*Vote:** *<novelty>* *<guess>***\*\*&nbsp;** or **\*\*Vote: no lynch\*\*&nbsp;**. If you don't want to make a guess regarding who is controlling the novelty, type **none** instead of *<guess>*.";
