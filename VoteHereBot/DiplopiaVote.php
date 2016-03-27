@@ -22,10 +22,11 @@
     // Represents a vote, which includes the name of the novelty to be lynched and the username of the player the voter
     // thinks is controlling the novelty.
     class DiplopiaVote extends Vote {
+        const GUESS_NONE = 0; // not null because array_count_values() can only count integers and strings
         public $guess;
         
         // Creates a new vote.
-        public function __construct(/* string */ $author, /* string */ $target, /* string */ $guess,
+        public function __construct(/* string */ $author, /* string */ $target, /* string or self::GUESS_* */ $guess,
                                     /* timestamp */ $time, /* string */ $url) {
             $this->author = $author;
             $this->target = $target;
@@ -65,7 +66,7 @@
                         continue;
                     
                     if(strtolower($guessMatch) === 'none')
-                        $guess = 0; // array_count_values() can only count integers and strings
+                        $guess = self::GUESS_NONE;
                     else {
                         $guessUsername = self::resolveUsername($guessMatch, $operators, $nicknames);
                         if($guessUsername)

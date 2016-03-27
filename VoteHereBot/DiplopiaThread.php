@@ -97,9 +97,15 @@
                 }
             }
             
+            // Failing to cast a vote counts as voting against oneself since day 4.
+            // Self votes that do not apply will be filtered out by the LatestFilter.
+            foreach($this->players as $player) {
+                $votes[] = new DiplopiaVote($player, $player, DiplopiaVote::GUESS_NONE, $this->created,
+                                            '/r/' . $this->subreddit . '/comments/' . $this->postId);
+            }
+            
             // Filter votes
             $votes = (new LatestFilter())->apply($votes);
-            $votes = (new SelfFilter())->apply($votes);
             $votes = (new DeadFilter($this))->apply($votes);
             
             // Merge votes into buckets
