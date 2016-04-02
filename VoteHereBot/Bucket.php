@@ -62,7 +62,8 @@
         public function getDisplayName(/* bool */ $escapeUsername = false) {
             if($this->target === null)
                 return 'No Lynch';
-            $escapedTarget = str_replace('_', '\_', $this->target);
-            return ($escapeUsername ? '\\' : '') . '/u/' . $escapedTarget;
+            if($escapeUsername)
+                return '\\/u/' . str_replace('_', '\_', $this->target);
+            return '/u/' . $this->target;
         }
     }
