@@ -64,6 +64,6 @@
                 return 'No Lynch';
             if($escapeUsername)
                 return '\\/u/' . str_replace('_', '\_', $this->target);
-            return '/u/' . $target;
+            return '/u/' . $this->target;
         }
     }
